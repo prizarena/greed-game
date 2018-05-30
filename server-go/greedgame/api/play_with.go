@@ -82,7 +82,7 @@ func playPlaceBid(c context.Context, userID string, w http.ResponseWriter, r *ht
 			err = errors.WithMessage(err, "failed to place a bid against stranger")
 		}
 	default:
-		if bidOutput, err = facade.GameFacade.PlaceBidAgainstRival(c, now, userID, tournamentID, rivalID, false, bid); err != nil {
+		if bidOutput, err = facade.GreedGameFacade.PlaceBidAgainstRival(c, now, userID, tournamentID, rivalID, false, bid); err != nil {
 			err = errors.WithMessage(err, "failed to place a bid against rival")
 		}
 	}
@@ -98,7 +98,7 @@ func playWithdrawBid(c context.Context, userID string, w http.ResponseWriter, r 
 		return
 	}
 
-	bidOutput, err := facade.GameFacade.Withdraw(c, tournamentID, userID, rivalID, false)
+	bidOutput, err := facade.GreedGameFacade.Withdraw(c, tournamentID, userID, rivalID, false)
 	bidOutputToResponse(c, bidOutput, err, w)
 	return
 }
@@ -111,7 +111,7 @@ func playNewGame(c context.Context, userID string, w http.ResponseWriter, r *htt
 		return
 	}
 
-	user, err := facade.GameFacade.NewGame(c, tournamentID, userID, rivalID)
+	user, err := facade.GreedGameFacade.NewGame(c, tournamentID, userID, rivalID)
 	jsonToResponse(c, w, &dto.BidResponse{
 		UserBalance: user.Tokens,
 	})
@@ -125,7 +125,7 @@ func playQuitBattle(c context.Context, userID string, w http.ResponseWriter, r *
 		return
 	}
 
-	bidOutput, err := facade.GameFacade.Withdraw(c, tournamentID, userID, rivalID, true)
+	bidOutput, err := facade.GreedGameFacade.Withdraw(c, tournamentID, userID, rivalID, true)
 	bidOutputToResponse(c, bidOutput, err, w)
 	return
 }

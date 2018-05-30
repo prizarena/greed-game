@@ -14,7 +14,7 @@ import (
 type gameFacade struct {
 }
 
-var GameFacade = gameFacade{}
+var GreedGameFacade = gameFacade{}
 
 func decideWinnerAndUpdateEntities(
 	now time.Time,

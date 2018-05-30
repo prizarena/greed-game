@@ -20,11 +20,7 @@ var (
 
 func (sf strangerFacade) PlaceBidAgainstStranger(c context.Context, now time.Time, userID, tournamentID string, bid int) (bidOutput BidOutput, err error) {
 	log.Debugf(c, "strangerFacade.PlaceBidAgainstStranger(userID=%v, tournamentID=%v, bid=%v)", userID, tournamentID, bid)
-	if tournamentID == "" || arena.IsMonthlyTournamentID(tournamentID) {
-		tournamentID = arena.TournamentStarID
-	}
-	if userID == "" {
-		err = errors.New("Parameter userID is empty string")
+	if err = arena.VerifyUserAndTorunamentIDs(userID, &tournamentID); err != nil {
 		return
 	}
 	if bid <= 0 || bid > 100 {
@@ -34,7 +30,7 @@ func (sf strangerFacade) PlaceBidAgainstStranger(c context.Context, now time.Tim
 
 	onRivalFound := func(rivalUserID string) (err error) {
 		log.Debugf(c, "strangerFacade.PlaceBidAgainstStranger() => will link 2 strangers")
-		bidOutput, err = GameFacade.PlaceBidAgainstRival(c, now, userID, tournamentID, rivalUserID, true, bid)
+		bidOutput, err = GreedGameFacade.PlaceBidAgainstRival(c, now, userID, tournamentID, rivalUserID, true, bid)
 		return
 	}
 
