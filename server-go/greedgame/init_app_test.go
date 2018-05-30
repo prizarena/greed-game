@@ -6,5 +6,5 @@ import (
 )
 
 func TestInitGreedGameApp(t *testing.T) {
-	InitGreedGameApp(gae_host.GaeBotHost{})
+	InitGreedGameApp(gaehost.GaeBotHost{})
 }

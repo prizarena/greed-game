@@ -9,6 +9,7 @@ import (
 	"github.com/strongo/db"
 	"github.com/strongo/log"
 	"time"
+	"github.com/strongo-games/turn-based"
 )
 
 type gameFacade struct {
@@ -331,11 +332,13 @@ func (gameFacade) PlaceBidAgainstRival(c context.Context, now time.Time, userID,
 			entitiesToUpdate = append(entitiesToUpdate, user1, user2)
 
 			bidOutput.Game.GameEntity = &models.GameEntity{
-				Strangers: isStrangersGame,
-				Created:   rivalUserBid.Time,
-				UserIDs: []string{
-					user1.ID,
-					user2.ID,
+				GameEntity: turnbased.GameEntity{
+					Strangers: isStrangersGame,
+					Created:   rivalUserBid.Time,
+					UserIDs: []string{
+						user1.ID,
+						user2.ID,
+					},
 				},
 			}
 			bidOutput.Game.SetBid(rivalUserID, rivalUserBid.Value)

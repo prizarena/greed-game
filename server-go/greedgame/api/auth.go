@@ -83,7 +83,7 @@ func issueTokenToFirebaseUser(c context.Context, w http.ResponseWriter, r *http.
 	} else if fbAuth, err := firebaseApp.Auth(c); err != nil {
 		failed(err, http.StatusInternalServerError)
 		return
-	} else if firebaseToken, err := fbAuth.VerifyIDToken(string(idToken)); err != nil {
+	} else if firebaseToken, err := fbAuth.VerifyIDToken(c, string(idToken)); err != nil {
 		failed(err, http.StatusForbidden)
 		return
 	} else if firebaseUser, err := fbAuth.GetUser(c, firebaseToken.UID); err != nil {

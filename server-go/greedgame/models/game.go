@@ -4,17 +4,12 @@ import (
 	"fmt"
 	"github.com/strongo/db"
 	"strconv"
-	"time"
+	"github.com/strongo-games/turn-based"
 )
 
 type GameEntity struct {
-	Created      time.Time
-	UserIDs      []string
-	TournamentID string    `datastore:",omitempty"`
-	Strangers    bool      `datastore:",noindex,omitempty"`
+	turnbased.GameEntity
 	Bids         []int     `datastore:",noindex"`
-	WinnerUserID string    `datastore:",noindex,omitempty"`
-	Finished     time.Time `datastore:",omitempty"`
 }
 
 const GameKind = "Game"
