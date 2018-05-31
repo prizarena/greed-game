@@ -8,7 +8,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/strongo/arena"
+	"github.com/strongo-games/arena/arena-go"
 	"github.com/strongo/db"
 	"github.com/strongo/log"
 	"net/http"

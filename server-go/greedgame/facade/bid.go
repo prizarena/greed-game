@@ -2,7 +2,7 @@ package facade
 
 import (
 	"github.com/strongo-games/greed-game/server-go/greedgame/models"
-	"github.com/strongo/arena"
+	"github.com/strongo-games/arena/arena-go"
 )
 
 type BidOutput struct {

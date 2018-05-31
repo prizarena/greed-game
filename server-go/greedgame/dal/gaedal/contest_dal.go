@@ -5,7 +5,7 @@ import (
 	"github.com/strongo-games/greed-game/server-go/greedgame/models"
 	"context"
 	"github.com/pkg/errors"
-	"github.com/strongo/arena"
+	"github.com/strongo-games/arena/arena-go"
 	"github.com/strongo/log"
 	"google.golang.org/appengine/datastore"
 	"time"

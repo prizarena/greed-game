@@ -9,7 +9,7 @@ import (
 	"bytes"
 	"fmt"
 	fflib "github.com/pquerna/ffjson/fflib/v1"
-	"github.com/strongo/arena"
+	"github.com/strongo-games/arena/arena-go"
 )
 
 // MarshalJSON marshal bytes to json - template
