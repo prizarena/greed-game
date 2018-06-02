@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #projectFolder=~/debtstracker
-gaeAppFolder=~/go_workspace/src/github.com/strongo-games/greed-game/server-go/
+gaeAppFolder=~/go_workspace/src/github.com/prizarena/greed-game/server-go/
 ionicAppFolder=~/GreedGame/greedgame-ionicapp/
 deployFolder=~/greedgame_deploy
 #testsBackupFolder=~/debtstracker_tests/

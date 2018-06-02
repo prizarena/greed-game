@@ -1,8 +1,8 @@
 package greedgame
 
 import (
-	"github.com/strongo-games/greed-game/server-go/greedgame/api"
-	"github.com/strongo-games/greed-game/server-go/greedgame/dal/gaedal"
+	"github.com/prizarena/greed-game/server-go/greedgame/api"
+	"github.com/prizarena/greed-game/server-go/greedgame/dal/gaedal"
 	"github.com/julienschmidt/httprouter"
 	"github.com/strongo/bots-framework/core"
 	"net/http"

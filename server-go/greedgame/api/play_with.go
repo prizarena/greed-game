@@ -1,14 +1,14 @@
 package api
 
 import (
-	"github.com/strongo-games/greed-game/server-go/greedgame/api/dto"
-	"github.com/strongo-games/greed-game/server-go/greedgame/dal"
-	"github.com/strongo-games/greed-game/server-go/greedgame/facade"
-	"github.com/strongo-games/greed-game/server-go/greedgame/models"
+	"github.com/prizarena/greed-game/server-go/greedgame/api/dto"
+	"github.com/prizarena/greed-game/server-go/greedgame/dal"
+	"github.com/prizarena/greed-game/server-go/greedgame/facade"
+	"github.com/prizarena/greed-game/server-go/greedgame/models"
 	"context"
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/strongo-games/arena/arena-go"
+	"github.com/prizarena/arena/arena-go"
 	"github.com/strongo/db"
 	"github.com/strongo/log"
 	"net/http"

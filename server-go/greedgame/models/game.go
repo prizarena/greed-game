@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/strongo/db"
 	"strconv"
-	"github.com/strongo-games/turn-based"
+	"github.com/prizarena/turn-based"
 )
 
 type GameEntity struct {

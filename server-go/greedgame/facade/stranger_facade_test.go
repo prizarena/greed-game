@@ -1,10 +1,10 @@
 package facade
 
 import (
-	"github.com/strongo-games/greed-game/server-go/greedgame/dal"
-	"github.com/strongo-games/greed-game/server-go/greedgame/dal/gaedal"
-	"github.com/strongo-games/greed-game/server-go/greedgame/defaults"
-	"github.com/strongo-games/greed-game/server-go/greedgame/models"
+	"github.com/prizarena/greed-game/server-go/greedgame/dal"
+	"github.com/prizarena/greed-game/server-go/greedgame/dal/gaedal"
+	"github.com/prizarena/greed-game/server-go/greedgame/defaults"
+	"github.com/prizarena/greed-game/server-go/greedgame/models"
 	"context"
 	"github.com/strongo/db"
 	"github.com/strongo/db/mockdb"

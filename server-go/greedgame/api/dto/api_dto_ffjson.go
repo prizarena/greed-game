@@ -6,7 +6,7 @@
 package dto
 
 import (
-	"github.com/strongo-games/greed-game/server-go/greedgame/models"
+	"github.com/prizarena/greed-game/server-go/greedgame/models"
 	"bytes"
 	"fmt"
 	fflib "github.com/pquerna/ffjson/fflib/v1"

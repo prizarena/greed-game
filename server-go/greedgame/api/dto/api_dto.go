@@ -3,7 +3,7 @@ package dto
 //go:generate ffjson $GOFILE
 
 import (
-	"github.com/strongo-games/greed-game/server-go/greedgame/models"
+	"github.com/prizarena/greed-game/server-go/greedgame/models"
 	"encoding/json"
 	"time"
 )

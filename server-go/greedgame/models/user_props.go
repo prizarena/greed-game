@@ -4,7 +4,7 @@ package models
 
 import (
 	"github.com/pquerna/ffjson/ffjson"
-	"github.com/strongo-games/arena/arena-go"
+	"github.com/prizarena/arena/arena-go"
 	"time"
 )
 

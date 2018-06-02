@@ -1,8 +1,8 @@
 package greedgame
 
 import (
-	"github.com/strongo-games/greed-game/server-go/greedgame/greedgamebot/platforms/tg"
-	"github.com/strongo-games/greed-game/server-go/greedgame/greedgamebot/routing"
+	"github.com/prizarena/greed-game/server-go/greedgame/greedgamebot/platforms/tg"
+	"github.com/prizarena/greed-game/server-go/greedgame/greedgamebot/routing"
 	"context"
 	"github.com/DebtsTracker/translations/trans"
 	"github.com/julienschmidt/httprouter"

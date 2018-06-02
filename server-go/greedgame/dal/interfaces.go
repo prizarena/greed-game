@@ -1,9 +1,9 @@
 package dal
 
 import (
-	"github.com/strongo-games/greed-game/server-go/greedgame/models"
+	"github.com/prizarena/greed-game/server-go/greedgame/models"
 	"context"
-	"github.com/strongo-games/arena/arena-go"
+	"github.com/prizarena/arena/arena-go"
 	"github.com/strongo/db"
 )
 

@@ -6,7 +6,7 @@ import (
 	"github.com/pquerna/ffjson/ffjson"
 	"github.com/strongo/app"
 	"github.com/strongo/app/user"
-	"github.com/strongo-games/arena/arena-go"
+	"github.com/prizarena/arena/arena-go"
 	"github.com/strongo/db"
 	"time"
 )
