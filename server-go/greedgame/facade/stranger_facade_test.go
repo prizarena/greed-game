@@ -170,7 +170,7 @@ func TestStrangerFacade_PlaceBidAgainstStranger(t *testing.T) {
 				} else if rival, ok := rivals[models.NewBattleKey(tournamentID, rivalUserID)]; !ok {
 					t.Errorf("%v{ID: %v} misses rival with ID=%v. RivalStats: %+v", name, user.ID, rivalKey, rivals)
 				} else if rival.GamesCount != 1 {
-					t.Errorf("%v.rivals[%v].GamesCount != 1", name, user.ID)
+					t.Errorf("%v.rivals[%v].CountOfPlaysCompleted != 1", name, user.ID)
 				} else if rival.Balance == 0 {
 					t.Errorf("%v.rivals[%v].Balance == 0", name, user.ID)
 				}
@@ -243,7 +243,7 @@ func TestStrangerFacade_PlaceBidAgainstStranger(t *testing.T) {
 			//}
 			//
 			//if gamesSession.GamesPlayed != 1 {
-			//	t.Errorf("gamesSession.GamesCount expected to be 1, got %v", gamesSession.GamesPlayed)
+			//	t.Errorf("gamesSession.CountOfPlaysCompleted expected to be 1, got %v", gamesSession.GamesPlayed)
 			//}
 			//
 			//if game.ID == "" {

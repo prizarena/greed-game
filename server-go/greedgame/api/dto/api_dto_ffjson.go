@@ -2088,7 +2088,7 @@ func (j *TournamentDto) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	}
 	buf.WriteByte(',')
 	if j.ContestantsCount != 0 {
-		buf.WriteString(`"ContestantsCount":`)
+		buf.WriteString(`"CountOfContestants":`)
 		fflib.FormatBits2(buf, uint64(j.ContestantsCount), 10, j.ContestantsCount < 0)
 		buf.WriteByte(',')
 	}
@@ -2145,7 +2145,7 @@ var ffjKeyTournamentDtoStarts = []byte("Starts")
 
 var ffjKeyTournamentDtoEnds = []byte("Ends")
 
-var ffjKeyTournamentDtoContestantsCount = []byte("ContestantsCount")
+var ffjKeyTournamentDtoContestantsCount = []byte("CountOfContestants")
 
 var ffjKeyTournamentDtoSponsor = []byte("Sponsor")
 
@@ -2528,7 +2528,7 @@ handle_Ends:
 
 handle_ContestantsCount:
 
-	/* handler: j.ContestantsCount type=int kind=int quoted=false*/
+	/* handler: j.CountOfContestants type=int kind=int quoted=false*/
 
 	{
 		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
