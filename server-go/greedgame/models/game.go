@@ -7,41 +7,41 @@ import (
 	"github.com/prizarena/turn-based"
 )
 
-type GameEntity struct {
-	turnbased.GameEntity
-	Bids         []int     `datastore:",noindex"`
+type PlayEntity struct {
+	turnbased.PlayEntity
+	Bids []int `datastore:",noindex"`
 }
 
-const GameKind = "Game"
+const PlayKind = "Play"
 
-type Game struct {
+type Play struct {
 	db.StringID
-	*GameEntity
+	*PlayEntity
 }
 
-var _ db.EntityHolder = (*Game)(nil)
+var _ db.EntityHolder = (*Play)(nil)
 
-func (Game) Kind() string {
-	return GameKind
+func (Play) Kind() string {
+	return PlayKind
 }
 
-func (Game) NewEntity() interface{} {
-	return new(GameEntity)
+func (Play) NewEntity() interface{} {
+	return new(PlayEntity)
 }
 
-func (g Game) Entity() interface{} {
-	return g.GameEntity
+func (g Play) Entity() interface{} {
+	return g.PlayEntity
 }
 
-func (g *Game) SetEntity(v interface{}) {
+func (g *Play) SetEntity(v interface{}) {
 	if v == nil {
-		g.GameEntity = nil
+		g.PlayEntity = nil
 	} else {
-		g.GameEntity = v.(*GameEntity)
+		g.PlayEntity = v.(*PlayEntity)
 	}
 }
 
-func (g *GameEntity) GetBid(userID string) (bid int) {
+func (g *PlayEntity) GetBid(userID string) (bid int) {
 	switch len(g.Bids) {
 	case 0:
 		return
@@ -64,7 +64,7 @@ func (g *GameEntity) GetBid(userID string) (bid int) {
 	}
 }
 
-func (g *GameEntity) SetBid(userID string, bid int) (change int) {
+func (g *PlayEntity) SetBid(userID string, bid int) (change int) {
 	if bid <= 0 {
 		panic(fmt.Sprintf("bid should be > 0, got %v", bid))
 	}
@@ -88,7 +88,7 @@ func (g *GameEntity) SetBid(userID string, bid int) (change int) {
 	return
 }
 
-func (g GameEntity) HasBothBids() bool {
+func (g PlayEntity) HasBothBids() bool {
 	if bidsCount := len(g.Bids); bidsCount > 2 {
 		panic("maximum 2 bids allowed, got " + strconv.FormatInt(int64(bidsCount), 10))
 	} else {
@@ -96,7 +96,7 @@ func (g GameEntity) HasBothBids() bool {
 	}
 }
 
-func (g GameEntity) Prize() int {
+func (g PlayEntity) Prize() int {
 	if !g.HasBothBids() {
 		panic("not enough bids")
 	}

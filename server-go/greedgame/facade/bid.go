@@ -7,7 +7,7 @@ import (
 
 type BidOutput struct {
 	RivalKey            arena.BattleID
-	Game                models.Game
+	Play                models.Play
 	User                models.User
 	RivalUser           models.User
 	UserContestant      arena.Contestant

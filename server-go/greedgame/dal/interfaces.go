@@ -14,9 +14,9 @@ type UserDal interface {
 //	GetContestant(c context.Context, tournamentID, userID string) (user models.Tournament, err error)
 //}
 
-type GameDal interface {
-	GetGameByID(c context.Context, gameID string) (game models.Game, err error)
-	NewGame(c context.Context, entity *models.GameEntity) (game models.Game, err error)
+type PlayDal interface {
+	GetPlayByID(c context.Context, playID string) (play models.Play, err error)
+	NewPlay(c context.Context, entity *models.PlayEntity) (play models.Play, err error)
 }
 
 //type GamesSessionDal interface {
@@ -25,9 +25,6 @@ type GameDal interface {
 
 var (
 	DB         db.Database
-	//Tournament pa.TournamentDal
-	//Contestant   TournamentDal
 	User UserDal
-	Game GameDal
-	//GamesSession GamesSessionDal
+	Play PlayDal
 )

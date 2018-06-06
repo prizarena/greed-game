@@ -155,11 +155,11 @@ func TestStrangerFacade_PlaceBidAgainstStranger(t *testing.T) {
 				t.Errorf("Expected user2 balance to be %v, got: %v", expected, user2.Tokens)
 			}
 
-			if bidOutput.Game.ID == "" {
+			if bidOutput.Play.ID == "" {
 				t.Error("bidOutput.Game.ID is empty")
 			}
 
-			if !bidOutput.Game.HasBothBids() {
+			if !bidOutput.Play.HasBothBids() {
 				t.Error("bidOutput.Game.HasBothBids(): false")
 			}
 
@@ -209,8 +209,8 @@ func TestStrangerFacade_PlaceBidAgainstStranger(t *testing.T) {
 					}
 					if lastGame.ID == "" {
 						t.Errorf("battle.LastGame.ID is empty: %v", user.ID)
-					} else if lastGame.ID != bidOutput.Game.ID {
-						t.Errorf("battle.LastGame.ID != bidOutput.Game.ID: %v != %v", lastGame.ID, bidOutput.Game.ID)
+					} else if lastGame.ID != bidOutput.Play.ID {
+						t.Errorf("battle.LastGame.ID != bidOutput.Game.ID: %v != %v", lastGame.ID, bidOutput.Play.ID)
 					}
 					if lastGame.Time.IsZero() {
 						t.Errorf("battle.LastGame.Time is zero")

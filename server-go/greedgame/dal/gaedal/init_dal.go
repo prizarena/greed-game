@@ -8,7 +8,6 @@ import (
 func RegisterDal() {
 	dal.DB = gaedb.NewDatabase()
 
-	dal.Tournament = tournamentGaeDal{}
 	dal.User = userGaeDal{}
-	dal.Game = gameGaeDal{}
+	dal.Play = playGaeDal{}
 }

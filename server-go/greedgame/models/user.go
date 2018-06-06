@@ -3,8 +3,7 @@ package models
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/pquerna/ffjson/ffjson"
-	"github.com/strongo/app"
+		"github.com/strongo/app"
 	"github.com/strongo/app/user"
 	"github.com/prizarena/arena/arena-go"
 	"github.com/strongo/db"
@@ -28,8 +27,7 @@ type UserEntity struct {
 	//
 	//
 	TournamentIDs []string `datastore:",noindex"`
-	BattlesJson   string   `datastore:",noindex,omitempty"`
-	BattlesCount  int      `datastore:",noindex,omitempty"`
+	BattlesHandler
 	RivalStats    string   `datastore:",noindex,omitempty"`
 	//
 	arena.UserContestantEntity
@@ -71,48 +69,6 @@ func (u *UserEntity) SetBotUserID(platform, botID, botUserID string) {
 	})
 }
 
-func (u *User) GetBattles() (battles Battles) {
-	if u.BattlesJson == "" {
-		battles = make(Battles, 0, 1)
-		return
-	}
-	battles = make(Battles, 0, u.BattlesCount)
-	if err := ffjson.Unmarshal([]byte(u.BattlesJson), &battles); err != nil {
-		panic(err)
-	}
-	return
-}
-
-func (u *User) SetBattles(battles []Battle) {
-	if len(battles) == 0 {
-		u.BattlesJson = ""
-		u.BattlesCount = 0
-		return
-	}
-	{ // Perform data integrity checks
-		idsCount := make(map[arena.BattleID]int, len(battles)) // Check for duplicates
-		for i, b := range battles {
-			if b.ID == "" {
-				panic(fmt.Sprintf("battle has no ID, index=%v, battles: %+v", i, battles))
-			}
-			if count := idsCount[b.ID] + 1; count > 1 {
-				panic(fmt.Sprintf("Multiple battles with same ID=%v", b.ID))
-			} else {
-				idsCount[b.ID] = count
-			}
-			if !b.IsWithStranger() && (b.Name == "" && b.Nick == "") {
-				panic(fmt.Sprintf("battle has no Name or Nickname, ID=%v", b.ID))
-			}
-		}
-	}
-	if b, err := ffjson.Marshal(&battles); err != nil {
-		panic(err)
-	} else {
-		u.BattlesJson = string(b)
-		u.BattlesCount = len(battles)
-	}
-	return
-}
 
 var ErrNotEnoughTokens = errors.New("not enough tokens")
 

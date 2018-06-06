@@ -8,12 +8,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/prizarena/arena/arena-go"
+	// "github.com/prizarena/arena/arena-go"
 	"github.com/strongo/db"
 	"github.com/strongo/log"
 	"net/http"
 	"strconv"
 	"time"
+	"github.com/prizarena/arena/arena-go"
 )
 
 func verifyStrParam(c context.Context, w http.ResponseWriter, v string, name string) (err error) {
@@ -48,7 +49,7 @@ func getTournamentAndRivalIDs(c context.Context, w http.ResponseWriter, r *http.
 		return
 	}
 
-	if tournamentID, err = getAndVerifyRequestParam(c, w, r, "tournament", arena.TournamentStarID); err != nil {
+	if tournamentID, err = getAndVerifyRequestParam(c, w, r, "tournament", "*"); err != nil {
 		return
 	}
 

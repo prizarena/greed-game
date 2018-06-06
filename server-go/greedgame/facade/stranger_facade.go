@@ -9,6 +9,7 @@ import (
 	"github.com/strongo/db"
 	"github.com/strongo/log"
 	"time"
+	"github.com/prizarena/prizarena-public/prizarena-client-go"
 )
 
 type strangerFacade struct {
@@ -20,9 +21,6 @@ var (
 
 func (sf strangerFacade) PlaceBidAgainstStranger(c context.Context, now time.Time, userID, tournamentID string, bid int) (bidOutput BidOutput, err error) {
 	log.Debugf(c, "strangerFacade.PlaceBidAgainstStranger(userID=%v, tournamentID=%v, bid=%v)", userID, tournamentID, bid)
-	if err = arena.VerifyUserAndTorunamentIDs(userID, &tournamentID); err != nil {
-		return
-	}
 	if bid <= 0 || bid > 100 {
 		err = errors.New("bid must be in range 1-100")
 		return
@@ -34,21 +32,21 @@ func (sf strangerFacade) PlaceBidAgainstStranger(c context.Context, now time.Tim
 		return
 	}
 
-	onStranger := func(contestant *arena.Contestant) error {
-		err = sf.registerNewStranger(c, now, bid, &bidOutput, tournamentID, userID, contestant)
+	onStranger := func() error {
+		err = sf.registerNewStranger(c, now, bid, &bidOutput, tournamentID, userID)
 		return err
 	}
 
 	user := models.User{StringID: db.NewStrID(userID)}
 
-	if err = arena.MakeMoveAgainstStranger(c, now, tournamentID, &user, onRivalFound, onStranger); err != nil {
+	if err = prizarena.NewFacade(nil).MakeMoveAgainstStranger(c, tournamentID, userID, onRivalFound, onStranger); err != nil {
 		return
 	}
 
 	return
 }
 
-func (strangerFacade) registerNewStranger(c context.Context, now time.Time, bid int, bidOutput *BidOutput, tournamentID, userID string, contestant *arena.Contestant) (err error) {
+func (strangerFacade) registerNewStranger(c context.Context, now time.Time, bid int, bidOutput *BidOutput, tournamentID, userID string) (err error) {
 	var (
 		user        models.User
 		userBattles []models.Battle
@@ -65,6 +63,7 @@ func (strangerFacade) registerNewStranger(c context.Context, now time.Time, bid 
 		user.SetBattles(userBattles)
 		return
 	}
+
 
 	return arena.RegisterStranger(c, now, tournamentID, userID, contestant, updateUser)
 }

@@ -19,7 +19,7 @@ var GreedGameFacade = gameFacade{}
 
 func decideWinnerAndUpdateEntities(
 	now time.Time,
-	game models.Game,
+	game models.Play,
 	user1, user2 *models.User,
 	contestant1, contestant2 *arena.Contestant,
 ) {
@@ -60,10 +60,10 @@ func decideWinnerAndUpdateEntities(
 	}
 
 	updateContestants := func(winner, loser *arena.Contestant) {
-		winner.CountOfGames += 1
-		loser.CountOfGames += 1
-		winner.RivalUserIDs.Add(loser.UserID)
-		loser.RivalUserIDs.Add(winner.UserID)
+		winner.CountOfPlaysCompleted += 1
+		loser.CountOfPlaysCompleted += 1
+		winner.RivalGameUserIDs.Add(loser.GameUserID)
+		loser.RivalGameUserIDs.Add(winner.GameUserID)
 	}
 
 	bid1doubled, bid2doubled := bid1*2, bid2*2
@@ -169,7 +169,7 @@ func (gameFacade) Withdraw(c context.Context, tournamentID, userID, rivalID stri
 		} else if err != nil {
 			return
 		} else {
-			if contestant.Score == 0 && contestant.CountOfGames == 0 && contestant.RivalUserIDs == "" {
+			if contestant.Score == 0 && contestant.CountOfPlaysCompleted == 0 && contestant.RivalGameUserIDs == "" {
 				if err = dal.DB.Delete(c, contestant); err != nil {
 					return
 				}
@@ -239,10 +239,10 @@ func (gameFacade) PlaceBidAgainstRival(c context.Context, now time.Time, userID,
 				contestant.ContestantEntity = &arena.ContestantEntity{
 					TimeJoined:   now,
 					TournamentID: tournamentID,
-					UserID:       arena.ContestantID(contestant.ID).UserID(),
+					GameUserID:       arena.ContestantID(contestant.ID).UserID(),
 				}
 			} else if isStrangersGame {
-				contestant.Stranger = time.Time{}
+				contestant.StrangerCreated = time.Time{}
 			}
 			return
 		}
@@ -331,8 +331,8 @@ func (gameFacade) PlaceBidAgainstRival(c context.Context, now time.Time, userID,
 			// RivalStat user already placed a bid
 			entitiesToUpdate = append(entitiesToUpdate, user1, user2)
 
-			bidOutput.Game.GameEntity = &models.GameEntity{
-				GameEntity: turnbased.GameEntity{
+			bidOutput.Play.PlayEntity = &models.PlayEntity{
+				PlayEntity: turnbased.PlayEntity{
 					Strangers: isStrangersGame,
 					Created:   rivalUserBid.Time,
 					UserIDs: []string{
@@ -341,22 +341,22 @@ func (gameFacade) PlaceBidAgainstRival(c context.Context, now time.Time, userID,
 					},
 				},
 			}
-			bidOutput.Game.SetBid(rivalUserID, rivalUserBid.Value)
-			bidOutput.Game.SetBid(userID, bid)
+			bidOutput.Play.SetBid(rivalUserID, rivalUserBid.Value)
+			bidOutput.Play.SetBid(userID, bid)
 
-			decideWinnerAndUpdateEntities(now, bidOutput.Game, user1, user2, contestant1, contestant2)
+			decideWinnerAndUpdateEntities(now, bidOutput.Play, user1, user2, contestant1, contestant2)
 
 			entitiesToUpdate = append(entitiesToUpdate, contestant1, contestant2)
 
-			if bidOutput.Game, err = dal.Game.NewGame(c, bidOutput.Game.GameEntity); err != nil {
+			if bidOutput.Play, err = dal.Play.NewPlay(c, bidOutput.Play.PlayEntity); err != nil {
 				return
 			}
 
-			updateUserGameStats(bidOutput.Game, user, tournamentID, rivalUserID)
-			updateUserGameStats(bidOutput.Game, rivalUser, tournamentID, userID)
+			updateUserGameStats(bidOutput.Play, user, tournamentID, rivalUserID)
+			updateUserGameStats(bidOutput.Play, rivalUser, tournamentID, userID)
 
 			rivalUserBattle.ID = arena.NewBattleID(tournamentID, userID)
-			rivalUserBattles[rivalUserBattleIndex] = updateBattleBidLastGameRivalNameAndOldID(rivalUserBattle, bidOutput.Game, rivalUser, user, rivalUserBid, userBattle.Bid)
+			rivalUserBattles[rivalUserBattleIndex] = updateBattleBidLastGameRivalNameAndOldID(rivalUserBattle, bidOutput.Play, rivalUser, user, rivalUserBid, userBattle.Bid)
 			rivalUser.SetBattles(rivalUserBattles)
 		}
 
@@ -369,20 +369,20 @@ func (gameFacade) PlaceBidAgainstRival(c context.Context, now time.Time, userID,
 						return
 					}
 					rivalBattleFound = true
-					userBattle = updateBattleBidLastGameRivalNameAndOldID(battle, bidOutput.Game, user, rivalUser, userBattle.Bid, rivalUserBid)
+					userBattle = updateBattleBidLastGameRivalNameAndOldID(battle, bidOutput.Play, user, rivalUser, userBattle.Bid, rivalUserBid)
 					userBattles[i] = userBattle
 					break
 				} else if isStrangersGame && battle.ID == rivalPrevKey {
 					rivalBattleFound = true
 					battle.ID = rivalNextKey
-					userBattle = updateBattleBidLastGameRivalNameAndOldID(battle, bidOutput.Game, user, rivalUser, userBattle.Bid, rivalUserBid)
+					userBattle = updateBattleBidLastGameRivalNameAndOldID(battle, bidOutput.Play, user, rivalUser, userBattle.Bid, rivalUserBid)
 					userBattles[i] = userBattle
 					log.Debugf(c, "Stranger battle %v replaced with rival one: %v", rivalPrevKey, rivalNextKey)
 				}
 			}
 
 			if !rivalBattleFound {
-				userBattle = updateBattleBidLastGameRivalNameAndOldID(models.Battle{ID: rivalNextKey}, bidOutput.Game, user, rivalUser, userBattle.Bid, rivalUserBid)
+				userBattle = updateBattleBidLastGameRivalNameAndOldID(models.Battle{ID: rivalNextKey}, bidOutput.Play, user, rivalUser, userBattle.Bid, rivalUserBid)
 				userBattles = append([]models.Battle{userBattle}, userBattles[:]...)
 				log.Debugf(c, "Battle added for user: %v", rivalNextKey)
 			}
@@ -407,11 +407,11 @@ func (gameFacade) PlaceBidAgainstRival(c context.Context, now time.Time, userID,
 		return
 	}
 
-	log.Debugf(c, "A bid successfully placed on game #"+bidOutput.Game.ID)
+	log.Debugf(c, "A bid successfully placed on game #"+bidOutput.Play.ID)
 	return
 }
 
-func updateUserGameStats(game models.Game, user models.User, tournamentID, rivalUserID string) {
+func updateUserGameStats(game models.Play, user models.User, tournamentID, rivalUserID string) {
 	var balanceDiff int
 	if game.WinnerUserID == user.ID {
 		balanceDiff = game.Prize()
@@ -421,7 +421,7 @@ func updateUserGameStats(game models.Game, user models.User, tournamentID, rival
 	user.UpdateArenaStats(tournamentID, rivalUserID, game.ID, balanceDiff)
 }
 
-func updateBattleBidLastGameRivalNameAndOldID(battle models.Battle, game models.Game, user, rivalUser models.User, userBid, rivalBid *models.Bid) models.Battle {
+func updateBattleBidLastGameRivalNameAndOldID(battle models.Battle, game models.Play, user, rivalUser models.User, userBid, rivalBid *models.Bid) models.Battle {
 	if rivalBid != nil && rivalBid.Value != 0 { // If both users have bids
 		battle.LastGame = &models.LastGame{
 			ID:       game.ID,
