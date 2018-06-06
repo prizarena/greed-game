@@ -28,9 +28,6 @@ type UserEntity struct {
 	//
 	TournamentIDs []string `datastore:",noindex"`
 	BattlesHandler
-	RivalStats    string   `datastore:",noindex,omitempty"`
-	//
-	arena.UserContestantEntity
 }
 
 type User struct {
