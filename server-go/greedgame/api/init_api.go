@@ -12,8 +12,6 @@ import (
 	"strings"
 )
 
-type ContextHandler func(c context.Context, w http.ResponseWriter, r *http.Request) // TODO: Should be somewhere else?
-
 func InitApi(router *httprouter.Router) {
 	POST := func(path string, handle httprouter.Handle) {
 		router.POST(path, handle)
