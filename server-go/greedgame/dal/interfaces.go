@@ -3,7 +3,6 @@ package dal
 import (
 	"github.com/prizarena/greed-game/server-go/greedgame/models"
 	"context"
-	"github.com/prizarena/arena/arena-go"
 	"github.com/strongo/db"
 )
 
@@ -26,7 +25,7 @@ type GameDal interface {
 
 var (
 	DB         db.Database
-	Tournament arena.TournamentDal
+	//Tournament pa.TournamentDal
 	//Contestant   TournamentDal
 	User UserDal
 	Game GameDal
